@@ -1,5 +1,6 @@
 # coding: utf-8
-from sqlalchemy import Boolean, Column, Float, Index, Integer, LargeBinary, Numeric, Text, text
+from sqlalchemy import (Boolean, Column, Float, Index, Integer,
+                        LargeBinary, Numeric, Table, Text, text)
 from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -125,140 +126,6 @@ class Dictionary(Base):
     Size = Column(Text)
     LastModified = Column(Text)
     IsSynced = Column(Boolean)
-
-
-class Event(Base):
-    __tablename__ = 'Event'
-
-    EventType = Column(Integer, primary_key=True, nullable=False)
-    FirstOccurrence = Column(Text)
-    LastOccurrence = Column(Text)
-    EventCount = Column(Integer, server_default=text("0"))
-    ContentID = Column(Text, primary_key=True, nullable=False)
-    ExtraData = Column(LargeBinary)
-    Checksum = Column(Text)
-
-
-class OverDriveCard(Base):
-    __tablename__ = 'OverDriveCards'
-
-    CardId = Column(Integer, primary_key=True)
-    LibraryKey = Column(Text, nullable=False, index=True)
-    BestLibraryKey = Column(Text, nullable=False)
-    WebsiteId = Column(Integer, nullable=False)
-    Name = Column(Text)
-    LastModified = Column(Text)
-
-
-class OverDriveCheckoutBook(Base):
-    __tablename__ = 'OverDriveCheckoutBook'
-
-    id = Column(Text, primary_key=True)
-    title = Column(Text)
-    libraryKey = Column(Text)
-    cardId = Column(Text)
-
-
-class OverDriveLibrary(Base):
-    __tablename__ = 'OverDriveLibrary'
-
-    Selected = Column(Numeric, nullable=False, server_default=text("false"))
-    WebsiteId = Column(Integer, primary_key=True)
-    LibraryKey = Column(Text)
-    Name = Column(Text)
-
-
-class Review(Base):
-    __tablename__ = 'Reviews'
-
-    Id = Column(Text, primary_key=True)
-    Header = Column(Text)
-    Content = Column(Text)
-    CreationDate = Column(Text)
-    VolumeId = Column(Text, nullable=False)
-    AuthorDisplayName = Column(Text)
-    Sentiment = Column(Text)
-    UserId = Column(Text)
-    Likes = Column(Integer)
-    Dislikes = Column(Integer)
-    Rating = Column(Integer)
-    SyncDate = Column(Text)
-    Status = Column(Text)
-
-
-class Rule(Base):
-    __tablename__ = 'Rules'
-
-    AchievementId = Column(Text)
-    EventProperty = Column(Text)
-    EventType = Column(Text)
-    GoalValue = Column(Text, nullable=False)
-    Id = Column(Text, primary_key=True)
-    Operation = Column(Integer, nullable=False)
-    ParentRuleId = Column(Text)
-    ConjunctionType = Column(Integer)
-    IsConjunction = Column(Boolean)
-    Checksum = Column(Text)
-
-
-class Shelf(Base):
-    __tablename__ = 'Shelf'
-
-    CreationDate = Column(Text, index=True)
-    Id = Column(Text, primary_key=True, index=True)
-    InternalName = Column(Text)
-    LastModified = Column(Text)
-    Name = Column(Text, index=True)
-    Type = Column(Text)
-    _IsDeleted = Column(Boolean)
-    _IsVisible = Column(Boolean)
-    _IsSynced = Column(Boolean)
-    _SyncTime = Column(Text)
-    LastAccessed = Column(Text)
-
-
-class ShelfContent(Base):
-    __tablename__ = 'ShelfContent'
-
-    ShelfName = Column(Text, primary_key=True, nullable=False)
-    ContentId = Column(Text, primary_key=True, nullable=False)
-    DateModified = Column(Text, index=True)
-    _IsDeleted = Column(Boolean)
-    _IsSynced = Column(Boolean)
-
-
-class SyncQueue(Base):
-    __tablename__ = 'SyncQueue'
-
-    Date = Column(Text)
-    VolumeId = Column(Text, primary_key=True)
-    State = Column(Integer)
-
-
-class Tab(Base):
-    __tablename__ = 'Tab'
-
-    tabId = Column(Text, primary_key=True)
-    tabType = Column(Text)
-    browseTabType = Column(Text)
-    displayTitle = Column(Text)
-    parentTabId = Column(Text)
-    isDefault = Column(Boolean)
-    maxSize = Column(Integer)
-    totalResults = Column(Integer)
-    updateFrequencyMin = Column(Integer)
-    imageID = Column(Text)
-    isLeaf = Column(Boolean)
-    hasFeaturedLists = Column(Boolean)
-
-
-class WordList(Base):
-    __tablename__ = 'WordList'
-
-    Text = Column(Text, primary_key=True)
-    VolumeId = Column(Text)
-    DictSuffix = Column(Text)
-    DateCreated = Column(Text)
 
 
 class Content(Base):
@@ -389,6 +256,47 @@ class ContentSetting(Base):
     SelectedDictionary = Column(Text)
 
 
+class Event(Base):
+    __tablename__ = 'Event'
+
+    EventType = Column(Integer, primary_key=True, nullable=False)
+    FirstOccurrence = Column(Text)
+    LastOccurrence = Column(Text)
+    EventCount = Column(Integer, server_default=text("0"))
+    ContentID = Column(Text, primary_key=True, nullable=False)
+    ExtraData = Column(LargeBinary)
+    Checksum = Column(Text)
+
+
+class OverDriveCard(Base):
+    __tablename__ = 'OverDriveCards'
+
+    CardId = Column(Integer, primary_key=True)
+    LibraryKey = Column(Text, nullable=False, index=True)
+    BestLibraryKey = Column(Text, nullable=False)
+    WebsiteId = Column(Integer, nullable=False)
+    Name = Column(Text)
+    LastModified = Column(Text)
+
+
+class OverDriveCheckoutBook(Base):
+    __tablename__ = 'OverDriveCheckoutBook'
+
+    id = Column(Text, primary_key=True)
+    title = Column(Text)
+    libraryKey = Column(Text)
+    cardId = Column(Text)
+
+
+class OverDriveLibrary(Base):
+    __tablename__ = 'OverDriveLibrary'
+
+    Selected = Column(Numeric, nullable=False, server_default=text("false"))
+    WebsiteId = Column(Integer, primary_key=True)
+    LibraryKey = Column(Text)
+    Name = Column(Text)
+
+
 class Rating(Base):
     __tablename__ = 'ratings'
 
@@ -398,12 +306,96 @@ class Rating(Base):
     DateModified = Column(Text, nullable=False)
 
 
+class Review(Base):
+    __tablename__ = 'Reviews'
+
+    Id = Column(Text, primary_key=True)
+    Header = Column(Text)
+    Content = Column(Text)
+    CreationDate = Column(Text)
+    VolumeId = Column(Text, nullable=False)
+    AuthorDisplayName = Column(Text)
+    Sentiment = Column(Text)
+    UserId = Column(Text)
+    Likes = Column(Integer)
+    Dislikes = Column(Integer)
+    Rating = Column(Integer)
+    SyncDate = Column(Text)
+    Status = Column(Text)
+
+
+class Rule(Base):
+    __tablename__ = 'Rules'
+
+    AchievementId = Column(Text)
+    EventProperty = Column(Text)
+    EventType = Column(Text)
+    GoalValue = Column(Text, nullable=False)
+    Id = Column(Text, primary_key=True)
+    Operation = Column(Integer, nullable=False)
+    ParentRuleId = Column(Text)
+    ConjunctionType = Column(Integer)
+    IsConjunction = Column(Boolean)
+    Checksum = Column(Text)
+
+
+class Shelf(Base):
+    __tablename__ = 'Shelf'
+
+    CreationDate = Column(Text, index=True)
+    Id = Column(Text, primary_key=True, index=True)
+    InternalName = Column(Text)
+    LastModified = Column(Text)
+    Name = Column(Text, index=True)
+    Type = Column(Text)
+    _IsDeleted = Column(Boolean)
+    _IsVisible = Column(Boolean)
+    _IsSynced = Column(Boolean)
+    _SyncTime = Column(Text)
+    LastAccessed = Column(Text)
+
+
+class ShelfContent(Base):
+    __tablename__ = 'ShelfContent'
+
+    ShelfName = Column(Text, primary_key=True, nullable=False)
+    ContentId = Column(Text, primary_key=True, nullable=False)
+    DateModified = Column(Text, index=True)
+    _IsDeleted = Column(Boolean)
+    _IsSynced = Column(Boolean)
+
+
 class ShortcoverPage(Base):
     __tablename__ = 'shortcover_page'
 
     shortcoverId = Column(Text, primary_key=True, nullable=False)
     PageNumber = Column(Integer, primary_key=True, nullable=False)
     FormattedPage = Column(Text)
+
+
+class SyncQueue(Base):
+    __tablename__ = 'SyncQueue'
+
+    Date = Column(Text)
+    VolumeId = Column(Text, primary_key=True)
+    State = Column(Integer)
+
+
+class Tab(Base):
+    __tablename__ = 'Tab'
+
+    tabId = Column(Text, primary_key=True)
+    tabType = Column(Text)
+    browseTabType = Column(Text)
+    displayTitle = Column(Text)
+    parentTabId = Column(Text)
+    isDefault = Column(Boolean)
+    maxSize = Column(Integer)
+    totalResults = Column(Integer)
+    updateFrequencyMin = Column(Integer)
+    imageID = Column(Text)
+    isLeaf = Column(Boolean)
+    hasFeaturedLists = Column(Boolean)
 
 
 class User(Base):
@@ -443,3 +435,12 @@ class VolumeTab(Base):
 
     volumeId = Column(Text, primary_key=True, nullable=False, index=True)
     tabId = Column(Text, primary_key=True, nullable=False, server_default=text("'abcdefff-ffff-ffff-ffff-fffffffffffd'"))
+
+
+class WordList(Base):
+    __tablename__ = 'WordList'
+
+    Text = Column(Text, primary_key=True)
+    VolumeId = Column(Text)
+    DictSuffix = Column(Text)
+    DateCreated = Column(Text)
