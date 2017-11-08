@@ -131,15 +131,65 @@ class Dictionary(Base):
 class Content(Base):
     __tablename__ = 'content'
 
+    """
+        description: uuids for books; file paths for chapters
+                if book not a kobo entry, then uses file path
+        examples:
+             13204fd1-571b-43c7-97e4-e368399eb324: designates a book id
+            /mnt/onboard/.kobo/kepub/1b67cdf8-fc1d-429b-b8d1-89dc44d25889!OEBPS!c/c6.html#i6: a chapter
+        """
     ContentID = Column(Text, primary_key=True)
+
+    """
+    observed: 6, 9, 899
+        6: books
+        9: chapters within books
+        899: ?? possibly also chapter markers
+    """
     ContentType = Column(Text, nullable=False)
+
+    """
+    description: describes file type
+    observed: application/x-kobo-epub+zip, application/pdf, application/epub+zip,
+          application/xhtml+xml, application/x-cbz
+
+    """
     MimeType = Column(Text, nullable=False)
+
+    """
+    description: acts as a uuid for book on a chapter row; null on books
+    """
     BookID = Column(Text, index=True)
+
+    """
+    description: acts as the Title for book on a chapter row; null on books
+    """
     BookTitle = Column(Text)
+
+    """
+    description: for books, maps to image stored in .kobo/images; null on chapters
+    """
     ImageId = Column(Text)
+
+    """
+    description: book title if book, chapter title if chapter
+    """
     Title = Column(Text, index=True)
+
+    """
+    description: book author, if book; null on chapters
+    """
     Attribution = Column(Text, index=True)
+
+    """
+    description: the html formatted description of the book; null on chapters
+    """
     Description = Column(Text)
+
+    """
+    description: date the book was added to my account; null if chapters
+    example: 2016-02-21T05:00:00.000
+    """
     DateCreated = Column(Text)
     ShortCoverKey = Column(Text)
     adobe_location = Column(Text)
@@ -153,15 +203,42 @@ class Content(Base):
     NumShortcovers = Column(Integer)
     VolumeIndex = Column(Integer)
     ___NumPages = Column(Integer)
+
+    """
+    observed: 0, 1, 2, 3
+        0: Unread
+        1: In Progress/Currently Reading
+        2: Read
+        3: Closed/Removed
+    """
     ReadStatus = Column(Integer)
     ___SyncTime = Column(Text)
+
+    """
+    description: mostly a foreign key to UserID
+    observed: user_id uuid, 'removed', 'adobe_user'
+        user_id uuid: seem to be all active items associated with my account
+        'removed': ??
+        'adobe_user': used with "Kobo eReader User Guide" and any adobe digital editions
+    """
     ___UserID = Column(Text, nullable=False)
     PublicationId = Column(Text)
     ___FileOffset = Column(Integer)
     ___FileSize = Column(Integer)
     ___PercentRead = Column(Integer)
+
+    """
+    description: whether the book was removed locally; null for chapters
+    observed: 0, 3
+        0: book exists locally
+        3: book was removed
+    """
     ___ExpirationStatus = Column(Integer)
     FavouritesIndex = Column(NullType, nullable=False, server_default=text("-1"))
+
+    """
+    observed: 0, 1, 3, 6, -1
+    """
     Accessibility = Column(Integer, server_default=text("1"))
     ContentURL = Column(Text)
     Language = Column(Text)
