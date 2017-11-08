@@ -345,6 +345,16 @@ class Event(Base):
     Checksum = Column(Text)
 
 
+# Kobo Glo db contained this table
+t_Images = Table(
+    'Images', metadata,
+    Column('ImageId', Text, nullable=False),
+    Column('Type', Text, nullable=False),
+    Column('Width', Integer, nullable=False),
+    Column('Height', Integer, nullable=False)
+)
+
+
 class OverDriveCard(Base):
     __tablename__ = 'OverDriveCards'
 
